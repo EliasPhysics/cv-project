@@ -1,0 +1,162 @@
+
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io,color,exposure,measure,transform
+
+
+# lab_range = −128 to 127 
+
+# Normalize LAB channels
+L_min, L_max = 0, 100  # L channel range
+a_min, a_max = -128, 127  # a channel range
+b_min, b_max = -128, 127  # b channel range
+
+def norm_lab_img(lab_img):
+    """Convert LAB image to normalized in interval [0,1]"""
+    lab_img[:, :, 0] = (lab_img[:, :, 0] - 0) / (100 - 0)      # (lab_img[:, :, 0] - L_min) / (L_max - L_min)
+    lab_img[:, :, 1] = (lab_img[:, :, 1] + 128) / (127 + 128)      # (lab_img[:, :, 1] - a_min) / (a_max - a_min)
+    lab_img[:, :, 2] = (lab_img[:, :, 2] + 128) / (127 + 128)      # (lab_img[:, :, 2] - b_min) / (b_max - b_min)
+
+    return lab_img
+
+def unnorm_lab_img(normalized_lab_img):
+    """Convert LAB image from [0,1] range back to original LAB range"""
+    normalized_lab_img[:, :, 0] = normalized_lab_img[:, :, 0] * 100  # L was in [0,1] → [0,100]
+    normalized_lab_img[:, :, 1] = normalized_lab_img[:, :, 1] * (127 + 128) - 128  # a was in [0,1] → [-128,127]
+    normalized_lab_img[:, :, 2] = normalized_lab_img[:, :, 2] * (127 + 128) - 128  # b was in [0,1] → [-128,127]
+    
+    return normalized_lab_img
+
+def rgb2lab_rgb2grey(img,reduce_res=False,factor=0.75,norm=False):
+    """
+    Convert RGB image to LAB and grayscale, with optional resolution reduction and normalization.
+    
+    returns the LAB image (optionally normalized) and the greyscale image
+    """
+    if reduce_res:
+        image = transform.rescale(image, factor, anti_aliasing=True,multichannel=True)
+    
+    lab_img = color.rgb2lab(img)
+    grey_img = color.rgb2gray(img)
+
+    if norm: 
+        lab_img = norm_lab_img(lab_img)
+
+    return lab_img, grey_img
+
+def display_lab(lab_img,save=False,filename="test_rgb_img.jpg",norm=False):
+    """Display LAB image as RGB, with optional normalization and saving."""
+    if norm:
+        lab_img = unnorm_lab_img(lab_img)
+
+    rgb_img = color.lab2rgb(lab_img)
+
+    if save:
+        print("saving img")
+        plt.imsave(filename, rgb_img)
+        print("img saved")
+
+    plt.imshow(rgb_img)
+    plt.axis('off')  
+    plt.show()
+    
+
+image = io.imread("/Users/samrouppe/cv-project/datatreatment/pepo.jpg")
+
+lab, gray = rgb2lab_rgb2grey(image)
+
+display_lab(lab)
+
+gray = plt.imshow(gray,cmap="gray")
+plt.show()
+
+lab, gray = rgb2lab_rgb2grey(image,norm=True)
+
+display_lab(lab,norm=True)
+
+
+######### testing the color convertion and the resolution reduction
+
+# rgb_image_shape = image.shape
+# rgb_max = np.max(image)
+# rgb_min = np.min(image)
+
+# # print(f'RGB image shape: {rgb_image_shape}')
+# # print(f'RGB image min: {rgb_min}')
+# # print(f'RGB image max: {rgb_max}')
+
+
+
+# image_gray = color.rgb2gray(image)
+
+# image_gray_shape = image_gray.shape
+# grey_max = np.max(image_gray)
+# grey_min = np.min(image_gray)
+
+# print(f'grey image shape: {image_gray_shape}')
+# print(f'grey image min: {grey_min}')
+# print(f'grey image max: {grey_max}')
+
+
+
+# image_lab = color.rgb2lab(image)
+
+# image_lab_shape = image_lab.shape
+# lab_max = np.max(image_lab[:,:,0])
+# lab_min = np.min(image_lab[:,:,0])
+
+# print(f'lab image shape: {image_lab_shape}')
+# print(f'lab image min: {lab_min}')
+# print(f'lab image max: {lab_max}')
+
+# lab_im = plt.imshow(image_lab)
+# plt.show()
+
+
+# image_rgb = color.lab2rgb(image_lab)
+
+# print("###### CHECK #######")
+# rgb_image_shape = image_rgb.shape
+# rgb_max = np.max(image_rgb)
+# rgb_min = np.min(image_rgb)
+
+# # print(f'RGB image shape: {rgb_image_shape}')
+# # print(f'RGB image min: {rgb_min}')
+# # print(f'RGB image max: {rgb_max}')
+
+# rgb_im = plt.imshow(image_rgb)
+# plt.show()
+
+# # Plot the images side by side
+# fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+# # Grayscale image
+# axes[0].imshow(image_gray,cmap="gray")
+# axes[0].set_title('Grey Scale Image')
+# axes[0].axis('off')
+
+# # LAB intensity channel
+# axes[1].imshow(image_lab[:,:,0],cmap="gray")
+# axes[1].set_title('L*a*b* Intensity Color Channel')
+# axes[1].axis('off')
+
+# plt.tight_layout()
+# plt.show()
+
+
+# # spesific size resoulution change
+# # Reduce resolution : 
+
+# #low_res_image1 = transform.resize(image, (image.shape[0] // 2, image.shape[1] // 2), anti_aliasing=True)
+# # or
+# low_res_image2 = transform.rescale(image, 0.50, anti_aliasing=True,multichannel=True)
+
+# print(f"image resolution (shape) : {image.shape}")
+# #print(f"image reduced resolution (shape) : {low_res_image1.shape}")
+# print(f"image reduced resolution (shape) : {low_res_image2.shape}")
+
+# # Display using matplotlib
+# #plt.imshow(low_res_image1)
+# plt.imshow(low_res_image2)
+# plt.axis('off')  # Hide axes
+# plt.show()
