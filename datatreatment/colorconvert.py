@@ -11,6 +11,30 @@ L_min, L_max = 0, 100  # L channel range
 a_min, a_max = -128, 127  # a channel range
 b_min, b_max = -128, 127  # b channel range
 
+def crop_to_size(img, shape_tpl):
+    """Crops img to the shape of the given shape tuple, removing equal parts from both sides."""
+    H, W, C = img.shape  # Original dimensions
+    N, M, _ = shape_tpl  # Target dimensions
+
+    # Ensure cropping is possible
+    assert N <= H and M <= W, f"Target size ({N}, {M}) is larger than image size ({H}, {W})"
+
+    # Compute how much to remove
+    remove_H = H - N
+    remove_W = W - M
+
+    # Compute cropping indices
+    top = remove_H // 2
+    bottom = top + (remove_H % 2)  # Extra row if odd
+
+    left = remove_W // 2
+    right = left + (remove_W % 2)  # Extra column if odd
+
+    # Crop the image
+    img = img[top:H-bottom, left:W-right, :]
+
+    return img
+
 def norm_lab_img(lab_img):
     """Convert LAB image to normalized in interval [0,1]"""
     lab_img[:, :, 0] = (lab_img[:, :, 0] - 0) / (100 - 0)      # (lab_img[:, :, 0] - L_min) / (L_max - L_min)
@@ -27,14 +51,16 @@ def unnorm_lab_img(normalized_lab_img):
     
     return normalized_lab_img
 
-def rgb2lab_rgb2grey(img,factor=0,norm=False):
+def rgb2lab_rgb2grey(img,factor=0,norm=False,target_shape=None):
     """
     Convert RGB image to LAB and grayscale, with optional resolution reduction and normalization.
     
     returns the LAB image (optionally normalized) and the greyscale image
     """
     if factor > 0:
-        img = transform.rescale(image, factor, anti_aliasing=True,multichannel=True)
+        img = transform.rescale(img, factor, anti_aliasing=True,multichannel=True)
+        if target_shape is not None:
+            img = crop_to_size(img,target_shape)
     
     lab_img = color.rgb2lab(img)
     grey_img = color.rgb2gray(img)
@@ -61,7 +87,7 @@ def display_lab(lab_img,save=False,filename="test_rgb_img.jpg",norm=False):
     plt.show()
     
 
-image = io.imread("/Users/samrouppe/cv-project/datatreatment/pepo.jpg")
+# image = io.imread("/Users/samrouppe/cv-project/datatreatment/pepo.jpg")
 
 # lab, gray = rgb2lab_rgb2grey(image)
 
@@ -70,9 +96,9 @@ image = io.imread("/Users/samrouppe/cv-project/datatreatment/pepo.jpg")
 # gray = plt.imshow(gray,cmap="gray")
 # plt.show()
 
-lab, gray = rgb2lab_rgb2grey(image,factor=0.75,norm=True)
+# lab, gray = rgb2lab_rgb2grey(image,factor=0.75,norm=True)
 
-display_lab(lab,norm=True)
+# display_lab(lab,norm=True)
 
 
 ######### testing the color convertion and the resolution reduction
@@ -88,7 +114,7 @@ display_lab(lab,norm=True)
 
 
 # image_gray = color.rgb2gray(image)
-
+# print(type(image_gray))
 # image_gray_shape = image_gray.shape
 # grey_max = np.max(image_gray)
 # grey_min = np.min(image_gray)
@@ -100,7 +126,7 @@ display_lab(lab,norm=True)
 
 
 # image_lab = color.rgb2lab(image)
-
+# print(type(image_lab))
 # image_lab_shape = image_lab.shape
 # lab_max = np.max(image_lab[:,:,0])
 # lab_min = np.min(image_lab[:,:,0])
