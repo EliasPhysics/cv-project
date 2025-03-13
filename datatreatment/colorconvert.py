@@ -27,14 +27,14 @@ def unnorm_lab_img(normalized_lab_img):
     
     return normalized_lab_img
 
-def rgb2lab_rgb2grey(img,reduce_res=False,factor=0.75,norm=False):
+def rgb2lab_rgb2grey(img,factor=0,norm=False):
     """
     Convert RGB image to LAB and grayscale, with optional resolution reduction and normalization.
     
     returns the LAB image (optionally normalized) and the greyscale image
     """
-    if reduce_res:
-        image = transform.rescale(image, factor, anti_aliasing=True,multichannel=True)
+    if factor > 0:
+        img = transform.rescale(image, factor, anti_aliasing=True,multichannel=True)
     
     lab_img = color.rgb2lab(img)
     grey_img = color.rgb2gray(img)
@@ -63,14 +63,14 @@ def display_lab(lab_img,save=False,filename="test_rgb_img.jpg",norm=False):
 
 image = io.imread("/Users/samrouppe/cv-project/datatreatment/pepo.jpg")
 
-lab, gray = rgb2lab_rgb2grey(image)
+# lab, gray = rgb2lab_rgb2grey(image)
 
-display_lab(lab)
+# display_lab(lab)
 
-gray = plt.imshow(gray,cmap="gray")
-plt.show()
+# gray = plt.imshow(gray,cmap="gray")
+# plt.show()
 
-lab, gray = rgb2lab_rgb2grey(image,norm=True)
+lab, gray = rgb2lab_rgb2grey(image,factor=0.75,norm=True)
 
 display_lab(lab,norm=True)
 
