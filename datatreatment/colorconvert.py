@@ -59,8 +59,8 @@ def rgb2lab_rgb2grey(img,factor=0,norm=False,target_shape=None):
     """
     if factor > 0:
         img = transform.rescale(img, factor, anti_aliasing=True,multichannel=True)
-        if target_shape is not None:
-            img = crop_to_size(img,target_shape)
+    if target_shape is not None:
+        img = crop_to_size(img,target_shape)
     
     lab_img = color.rgb2lab(img)
     grey_img = color.rgb2gray(img)

@@ -6,6 +6,23 @@ import numpy as np
 
 
 def load_convert(N,src_path,gray_path,lab_path,print_freq=100,factor=0,print_size=False,target_shape=None):
+    """
+    Converts RGB images to Lab and grayscale, then saves them as .npy files.
+
+    Args:
+        N (int): Number of images to process.
+        src_path (str): Directory containing source images.
+        gray_path (str): Directory to save grayscale images.
+        lab_path (str): Directory to save Lab images.
+        print_freq (int, optional): Frequency of progress prints. Default is 100.
+        factor (int, optional): Factor for resolution scaling. Default is 0.
+        print_size (bool, optional): Whether to print the shape of Lab images. Default is False.
+        target_shape (tuple, optional): Target shape for cropping. Default is None.
+
+    Returns:
+        None
+    """
+
     print("converting and saving")
     for i in range(N):
         filename_img = str(i+1)
