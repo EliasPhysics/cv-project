@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def load_convert(N,src_path,gray_path,lab_path,print_freq=100,factor=0,print_size=False,target_shape=None):
+def load_convert(N,src_path,gray_path,lab_path,print_freq=100,factor=0,print_size=False,target_shape=None,norm_lab=False):
     """
     Converts RGB images to Lab and grayscale, then saves them as .npy files.
 
@@ -18,6 +18,7 @@ def load_convert(N,src_path,gray_path,lab_path,print_freq=100,factor=0,print_siz
         factor (int, optional): Factor for resolution scaling. Default is 0.
         print_size (bool, optional): Whether to print the shape of Lab images. Default is False.
         target_shape (tuple, optional): Target shape for cropping. Default is None.
+        norm_lab (bool, optional): Normalise the lab image to range [0,1]. Default is False.
 
     Returns:
         None
@@ -27,7 +28,7 @@ def load_convert(N,src_path,gray_path,lab_path,print_freq=100,factor=0,print_siz
     for i in range(N):
         filename_img = str(i+1)
         img = io.imread(src_path+filename_img+".jpg")
-        lab, gray = colconv.rgb2lab_rgb2grey(img,factor=factor,target_shape=target_shape)
+        lab, gray = colconv.rgb2lab_rgb2grey(img,factor=factor,target_shape=target_shape,norm=norm_lab)
 
         if print_size:
             print(lab.shape)
@@ -40,8 +41,8 @@ def load_convert(N,src_path,gray_path,lab_path,print_freq=100,factor=0,print_siz
 
     print("done")
 
-# target_shape = (309,232,3) # None
-# load_convert(5,"datatreatment/rgb_test/","datatreatment/input_gray_test/","datatreatment/gt_lab_test/",factor=0.1,print_size=False,target_shape=target_shape)
+target_shape = (309,232,3) # None
+load_convert(5,"datatreatment/rgb_test/","datatreatment/input_gray_test/","datatreatment/gt_lab_test/",factor=0.1,print_size=False,target_shape=target_shape)
 
 # ## test
 # loaded_lab = np.load("datatreatment/gt_lab_test/lab4.npy")

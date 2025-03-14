@@ -54,6 +54,7 @@ def unnorm_lab_img(normalized_lab_img):
 def rgb2lab_rgb2grey(img,factor=0,norm=False,target_shape=None):
     """
     Convert RGB image to LAB and grayscale, with optional resolution reduction and normalization.
+    Optional cropping to size given by target_shape=tuple(N,M,C)
     
     returns the LAB image (optionally normalized) and the greyscale image
     """
@@ -70,9 +71,9 @@ def rgb2lab_rgb2grey(img,factor=0,norm=False,target_shape=None):
 
     return lab_img, grey_img
 
-def display_lab(lab_img,save=False,filename="test_rgb_img.jpg",norm=False):
-    """Display LAB image as RGB, with optional normalization and saving."""
-    if norm:
+def display_lab(lab_img,save=False,filename="test_rgb_img.jpg"):
+    """Display LAB image as RGB, with optional saving."""
+    if np.min(lab_img) >= 0:
         lab_img = unnorm_lab_img(lab_img)
 
     rgb_img = color.lab2rgb(lab_img)
@@ -90,7 +91,7 @@ def display_lab(lab_img,save=False,filename="test_rgb_img.jpg",norm=False):
 # image = io.imread("/Users/samrouppe/cv-project/datatreatment/pepo.jpg")
 
 # lab, gray = rgb2lab_rgb2grey(image)
-
+# print(gray.shape)
 # display_lab(lab)
 
 # gray = plt.imshow(gray,cmap="gray")
@@ -98,7 +99,7 @@ def display_lab(lab_img,save=False,filename="test_rgb_img.jpg",norm=False):
 
 # lab, gray = rgb2lab_rgb2grey(image,factor=0.75,norm=True)
 
-# display_lab(lab,norm=True)
+# display_lab(lab)
 
 
 ######### testing the color convertion and the resolution reduction
