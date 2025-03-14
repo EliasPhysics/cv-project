@@ -36,20 +36,21 @@ def crop_to_size(img, shape_tpl):
     return img
 
 def norm_lab_img(lab_img):
-    """Convert LAB image to normalized in interval [0,1]"""
-    lab_img[:, :, 0] = (lab_img[:, :, 0] - 0) / (100 - 0)      # (lab_img[:, :, 0] - L_min) / (L_max - L_min)
-    lab_img[:, :, 1] = (lab_img[:, :, 1] + 128) / (127 + 128)      # (lab_img[:, :, 1] - a_min) / (a_max - a_min)
-    lab_img[:, :, 2] = (lab_img[:, :, 2] + 128) / (127 + 128)      # (lab_img[:, :, 2] - b_min) / (b_max - b_min)
+    """Convert LAB image to normalized range [-1,1]."""
+    lab_img[:, :, 0] = (lab_img[:, :, 0] - 0) / (100 - 0) * 2 - 1  # Scale L from [0,100] → [-1,1]
+    lab_img[:, :, 1] = (lab_img[:, :, 1] + 128) / (127 + 128) * 2 - 1  # Scale a from [-128,127] → [-1,1]
+    lab_img[:, :, 2] = (lab_img[:, :, 2] + 128) / (127 + 128) * 2 - 1  # Scale b from [-128,127] → [-1,1]
 
     return lab_img
 
 def unnorm_lab_img(normalized_lab_img):
-    """Convert LAB image from [0,1] range back to original LAB range"""
-    normalized_lab_img[:, :, 0] = normalized_lab_img[:, :, 0] * 100  # L was in [0,1] → [0,100]
-    normalized_lab_img[:, :, 1] = normalized_lab_img[:, :, 1] * (127 + 128) - 128  # a was in [0,1] → [-128,127]
-    normalized_lab_img[:, :, 2] = normalized_lab_img[:, :, 2] * (127 + 128) - 128  # b was in [0,1] → [-128,127]
+    """Convert LAB image from [-1,1] range back to original LAB range."""
+    normalized_lab_img[:, :, 0] = ((normalized_lab_img[:, :, 0] + 1) / 2) * 100  # Convert L from [-1,1] → [0,100]
+    normalized_lab_img[:, :, 1] = ((normalized_lab_img[:, :, 1] + 1) / 2) * (127 + 128) - 128  # Convert a from [-1,1] → [-128,127]
+    normalized_lab_img[:, :, 2] = ((normalized_lab_img[:, :, 2] + 1) / 2) * (127 + 128) - 128  # Convert b from [-1,1] → [-128,127]
     
     return normalized_lab_img
+
 
 def rgb2lab_rgb2grey(img,factor=0,norm=False,target_shape=None):
     """
@@ -64,12 +65,12 @@ def rgb2lab_rgb2grey(img,factor=0,norm=False,target_shape=None):
         img = crop_to_size(img,target_shape)
     
     lab_img = color.rgb2lab(img)
-    grey_img = color.rgb2gray(img)
+    #grey_img = color.rgb2gray(img)
 
     if norm: 
         lab_img = norm_lab_img(lab_img)
 
-    return lab_img, grey_img
+    return lab_img#, grey_img
 
 def display_lab(lab_img,save=False,filename="test_rgb_img.jpg"):
     """Display LAB image as RGB, with optional saving."""
@@ -187,3 +188,19 @@ def display_lab(lab_img,save=False,filename="test_rgb_img.jpg"):
 # plt.imshow(low_res_image2)
 # plt.axis('off')  # Hide axes
 # plt.show()
+
+# def norm_lab_img(lab_img):
+#     """Convert LAB image to normalized in interval [0,1]"""
+#     lab_img[:, :, 0] = (lab_img[:, :, 0] - 0) / (100 - 0)      # (lab_img[:, :, 0] - L_min) / (L_max - L_min)
+#     lab_img[:, :, 1] = (lab_img[:, :, 1] + 128) / (127 + 128)      # (lab_img[:, :, 1] - a_min) / (a_max - a_min)
+#     lab_img[:, :, 2] = (lab_img[:, :, 2] + 128) / (127 + 128)      # (lab_img[:, :, 2] - b_min) / (b_max - b_min)
+
+#     return lab_img
+
+# def unnorm_lab_img(normalized_lab_img):
+#     """Convert LAB image from [0,1] range back to original LAB range"""
+#     normalized_lab_img[:, :, 0] = normalized_lab_img[:, :, 0] * 100  # L was in [0,1] → [0,100]
+#     normalized_lab_img[:, :, 1] = normalized_lab_img[:, :, 1] * (127 + 128) - 128  # a was in [0,1] → [-128,127]
+#     normalized_lab_img[:, :, 2] = normalized_lab_img[:, :, 2] * (127 + 128) - 128  # b was in [0,1] → [-128,127]
+    
+#     return normalized_lab_img
