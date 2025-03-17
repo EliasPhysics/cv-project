@@ -54,8 +54,8 @@ def files_names_list(N,gt_path,prefix="lab",suffix=".npy"):
 gt_paths = files_names_list(5,"datatreatment/gt_lab_test")
 
 
-dataset = PairedNumpyDataset(gt_paths)
-dataloader = DataLoader(dataset, batch_size=1, shuffle=True)  # Load in batches
+dataset = PairedNumpyDataset(gt_paths,img_format="npy")
+dataloader = DataLoader(dataset, batch_size=5, shuffle=True)  # Load in batches
 
 # Iterate through the DataLoader
 for batch in dataloader:
@@ -87,20 +87,20 @@ def torch_to_numpy(img_tensor):
 ## target of generator should be gt_batch[:,1:]
 # print(gt_batch[:,1:].shape)
 
-import colorconvert as colconv
+#import colorconvert as colconv
 
-lab_img = torch_to_numpy(torch.cat((input_batch[0],gt_batch[0]),dim=0))
+#lab_img = torch_to_numpy(torch.cat((input_batch[0],gt_batch[0]),dim=0))
 
-colconv.display_lab(lab_img)
+#colconv.display_lab(lab_img)
 
 
 
-gray_img = torch_to_numpy(input_batch[0])
+#gray_img = torch_to_numpy(input_batch[0])
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
-gray = plt.imshow(gray_img,cmap="gray")
-plt.show()
+#gray = plt.imshow(gray_img,cmap="gray")
+#plt.show()
 
 # # gray_img = torch_to_numpy(gt_batch[0,0].unsqueeze(0))
 
