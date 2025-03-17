@@ -11,6 +11,8 @@ L_min, L_max = 0, 100  # L channel range
 a_min, a_max = -128, 127  # a channel range
 b_min, b_max = -128, 127  # b channel range
 
+
+
 def crop_to_size(img, shape_tpl):
     """Crops img to the shape of the given shape tuple, removing equal parts from both sides."""
     H, W, C = img.shape  # Original dimensions
@@ -34,6 +36,77 @@ def crop_to_size(img, shape_tpl):
     img = img[top:H-bottom, left:W-right, :]
 
     return img
+"""
+def resize_image(img, target_size=(256, 256)):
+    # Ensure the image is a numpy array
+    if not isinstance(img, np.ndarray):
+        raise TypeError("Input image must be a numpy array")
+    
+    imgtype = img.dtype
+    # Get the height and width from the image dimensions
+    h, w = img.shape[:2]
+    min_dim = min(h, w)
+    
+    # Center crop to square (min_dim x min_dim)
+    if h > w:
+        start = (h - min_dim) // 2
+        cropped = img[start:start + min_dim, :, :]
+    else:
+        start = (w - min_dim) // 2
+        cropped = img[:, start:start + min_dim, :]
+    
+    # Resize the cropped image to the target size with anti-aliasing
+    img = transform.resize(
+        img,
+        target_size,
+        anti_aliasing=True,
+        preserve_range=True  # Preserve original value range
+    )
+
+    # Round and cast to the original data type if it's an integer type
+    if np.issubdtype(imgtype, np.integer):
+        img = np.round(img)
+    
+    return img.astype(imgtype)
+"""
+def resize_image(img, target_size=(256, 256)):
+    if not isinstance(img, np.ndarray):
+        raise TypeError("Input image must be a numpy array")
+    
+    h, w = img.shape[:2]
+    target_h, target_w = target_size
+    
+    # Resize the image to preserve aspect ratio, using the shorter side as the reference
+    if h < w:
+        new_h = target_h
+        new_w = int(w * (target_h / h))  # Scale width proportionally
+    else:
+        new_w = target_w
+        new_h = int(h * (target_w / w))  # Scale height proportionally
+    
+    # Resize with anti-aliasing
+    resized = transform.resize(
+        img,
+        (new_h, new_w),
+        anti_aliasing=True,
+        preserve_range=True
+    )
+    
+    # Center crop to target size
+    start_h = max(0, (new_h - target_h) // 2)
+    start_w = max(0, (new_w - target_w) // 2)
+    cropped = resized[
+        start_h : start_h + target_h,
+        start_w : start_w + target_w
+    ]
+    
+    # Handle integer dtype (e.g., uint8)
+    if np.issubdtype(img.dtype, np.integer):
+        cropped = np.round(cropped).astype(img.dtype)
+    else:
+        cropped = cropped.astype(img.dtype)
+    
+    return cropped
 
 def norm_lab_img(lab_img):
     """Convert LAB image to normalized range [-1,1]."""

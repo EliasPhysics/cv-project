@@ -136,7 +136,7 @@ def check_size(img_path):
 
     return img.shape
 
-def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None,norm_lab=False):
+def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None,norm_lab=False,to_size=None):
     c = 0
     print("converting and saving")
     for i,file_path in enumerate(glob.glob(f"{src_path}/*.jpg")):  # Iterate over all JPG files
@@ -148,12 +148,20 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
         if len(img_shape) != 3:
             continue
 
-        if target_shape_crop is not None and (img_shape[0] < target_shape_crop[0] or img_shape[1] < target_shape_crop[1]):
+
+        if (target_shape_crop is not None) and (img_shape[0] < target_shape_crop[0] or img_shape[1] < target_shape_crop[1]):
             continue
+
+        if (to_size is not None) and (img_shape[0] < to_size[0] or img_shape[1] < to_size[1]):
+            continue
+
+        if to_size is not None:
+            img = colconv.resize_image(img,target_size=to_size)
 
         if factor > 0:
             img = colconv.transform.rescale(img, factor, anti_aliasing=True,multichannel=True)
-        if target_shape_crop is not None:
+
+        if target_shape_crop is not None and to_size is None:
             img = colconv.crop_to_size(img,target_shape_crop)
 
         c += 1
@@ -180,4 +188,6 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
 
 target_shape_crop = (256, 256, 3)
 #load_convert_lab("Caltech_WebFaces","Lab_Caltech_WebFaces",print_size=False,target_shape_crop=target_shape_crop)
-jpg_process("Caltech_WebFaces","Lab_Caltech_WebFaces",target_shape_crop=target_shape_crop)
+#jpg_process("Caltech_WebFaces","Lab_Caltech_WebFaces",target_shape_crop=target_shape_crop)
+to_size = (256,256)
+jpg_process("Caltech_WebFaces","Lab3",to_size=to_size)
