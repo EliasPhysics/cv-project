@@ -76,13 +76,13 @@ def resize_image(img, target_size=(256, 256)):
     h, w = img.shape[:2]
     target_h, target_w = target_size
     
-    # Resize the image to preserve aspect ratio, using the shorter side as the reference
+    # Determine the scaling factor to resize the shorter side to target size
     if h < w:
         new_h = target_h
-        new_w = int(w * (target_h / h))  # Scale width proportionally
+        new_w = int(np.round(w * (target_h / h)))
     else:
         new_w = target_w
-        new_h = int(h * (target_w / w))  # Scale height proportionally
+        new_h = int(np.round(h * (target_w / w)))
     
     # Resize with anti-aliasing
     resized = transform.resize(
@@ -92,15 +92,25 @@ def resize_image(img, target_size=(256, 256)):
         preserve_range=True
     )
     
-    # Center crop to target size
-    start_h = max(0, (new_h - target_h) // 2)
-    start_w = max(0, (new_w - target_w) // 2)
+    # Calculate center crop indices (ensures within bounds)
+    start_h = (new_h - target_h) // 2
+    start_w = (new_w - target_w) // 2
     cropped = resized[
         start_h : start_h + target_h,
         start_w : start_w + target_w
     ]
     
-    # Handle integer dtype (e.g., uint8)
+    # Ensure output is exactly (256, 256) even if resized dimensions were slightly off due to rounding
+    # This step is technically redundant due to the logic above but adds a safeguard
+    if cropped.shape[0] != target_h or cropped.shape[1] != target_w:
+        cropped = transform.resize(
+            cropped,
+            target_size,
+            anti_aliasing=True,
+            preserve_range=True
+        )
+    
+    # Handle integer dtype
     if np.issubdtype(img.dtype, np.integer):
         cropped = np.round(cropped).astype(img.dtype)
     else:
