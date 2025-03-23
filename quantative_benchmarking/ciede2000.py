@@ -1,8 +1,9 @@
+import os
+
 import cv2
 import numpy as np
 from colormath.color_objects import LabColor
 from colormath.color_diff import delta_e_cie2000
-
 
 def calculate_cie2000_difference(image1, image2):
     """
@@ -45,8 +46,9 @@ def calculate_cie2000_difference(image1, image2):
 # Example usage
 if __name__ == "__main__":
     # Load two images
-    image1 = cv2.imread("image1.jpg")
-    image2 = cv2.imread("image2.jpg")
+    os.chdir("..")
+    image1 = cv2.imread("1.png")
+    image2 = cv2.imread("2.png")
 
     # Resize images to the same dimensions (optional but recommended)
     image1 = cv2.resize(image1, (256, 256))

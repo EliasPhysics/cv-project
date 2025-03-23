@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import os
 
 
 def calculate_color_histogram(image, bins=8):
@@ -55,10 +56,11 @@ def color_histogram_similarity(image1, image2, bins=8):
 
 # Example usage
 if __name__ == "__main__":
-    # Load two images
-    image1 = cv2.imread("image1.jpg")
-    image2 = cv2.imread("image2.jpg")
 
+    # Load two images
+    os.chdir("..")
+    image1 = cv2.imread("1.png")
+    image2 = cv2.imread("2.png")
     # Resize images to the same dimensions (optional but recommended)
     image1 = cv2.resize(image1, (256, 256))
     image2 = cv2.resize(image2, (256, 256))
