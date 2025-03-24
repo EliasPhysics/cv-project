@@ -192,7 +192,8 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
 #to_size = (256,256)
 #jpg_process("Caltech_WebFaces","Lab3",to_size=to_size)
 
-for i in range(2148):
-    imsize = check_size(f"Lab3/{i+1}.jpg")
-    if imsize != (256,256,3):
-        print(imsize)
+#for i in range(2148):
+    #imsize = check_size(f"Lab3/{i+1}.jpg")
+    #if imsize != (256,256,3):
+        #print(imsize)
+
