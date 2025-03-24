@@ -48,9 +48,9 @@ Include some before-and-after images showcasing the model's performance.
 - Integrate with mobile applications
 
 ## Contributors
-- [Your Name](https://github.com/yourusername)
-- [Teammate Name](https://github.com/teammateusername)
-
+- [Elias Huber](https://github.com/yourusername)
+- [Sam Rouppe Van der Voort](https://github.com/teammateusername)
+- [Oliver Sange](https://github.com/teammateusername)
 ## License
 This project is licensed under the MIT License.
 
