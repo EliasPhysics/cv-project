@@ -197,3 +197,5 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
     #if imsize != (256,256,3):
         #print(imsize)
 
+to_size = (128,128)
+jpg_process("../../1m_faces_02","target",to_size=to_size)    
