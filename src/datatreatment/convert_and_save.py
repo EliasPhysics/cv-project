@@ -140,6 +140,7 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
     c = 0
     print("converting and saving")
     for i,file_path in enumerate(glob.glob(f"{src_path}/*.jpg")):  # Iterate over all JPG files
+        #os.listdir(src_path)
         if i%print_freq==0:
             print(f"progress : {i}")
         img = io.imread(file_path)  # Load image
@@ -198,4 +199,5 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
         #print(imsize)
 
 to_size = (128,128)
-jpg_process("../../1m_faces_02","target",to_size=to_size)    
+src_path = "../1m_faces_02"
+jpg_process(src_path,"data/faces128",to_size=to_size)    
