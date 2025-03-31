@@ -139,11 +139,12 @@ def check_size(img_path):
 def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None,norm_lab=False,to_size=None):
     c = 0
     print("converting and saving")
-    for i,file_path in enumerate(glob.glob(f"{src_path}/*.jpg")):  # Iterate over all JPG files
+    for i,file_path in enumerate(os.listdir(src_path)):#glob.glob(f"{src_path}/*.jpg")):  # Iterate over all JPG files
         #os.listdir(src_path)
+        
         if i%print_freq==0:
             print(f"progress : {i}")
-        img = io.imread(file_path)  # Load image
+        img = io.imread(src_path+"/"+file_path)  # Load image
         img_shape = img.shape
 
         if len(img_shape) != 3:
@@ -166,7 +167,7 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
             img = colconv.crop_to_size(img,target_shape_crop)
 
         c += 1
-        io.imsave(trg_path+"/"+str(c)+".jpg",img)
+        io.imsave(trg_path+"/"+str(c)+"c.jpg",img)
       
         #np.save(gray_path+"/gray"+filename_img,gray)
     print("done")
@@ -199,5 +200,5 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
         #print(imsize)
 
 to_size = (128,128)
-src_path = "../1m_faces_03" # training from 1m_faces_02, validation 1m_faces_03
-jpg_process(src_path,"data/val_faces128",to_size=to_size)    
+src_path = "../../images/train" # training from 1m_faces_02, validation 1m_faces_03
+jpg_process(src_path,"../data/mixed128",to_size=to_size)    
