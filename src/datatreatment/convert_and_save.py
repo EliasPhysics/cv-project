@@ -200,5 +200,5 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
         #print(imsize)
 
 to_size = (128,128)
-src_path = "../../images/val" # training from 1m_faces_02, validation 1m_faces_03
+src_path = "../../images/untouchedval" # training from 1m_faces_02, validation 1m_faces_03
 jpg_process(src_path,"../data/val_facerecognition128",to_size=to_size)    
