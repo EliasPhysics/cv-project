@@ -137,9 +137,9 @@ def check_size(img_path):
     return img.shape
 
 def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None,norm_lab=False,to_size=None):
-    c = 0
+    c = 4571
     print("converting and saving")
-    for i,file_path in enumerate(os.listdir(src_path)):#glob.glob(f"{src_path}/*.jpg")):  # Iterate over all JPG files
+    for i,file_path in enumerate(glob.glob(f"{src_path}/*.jpg")):  # Iterate over all JPG files
         #os.listdir(src_path)
         
         if i%print_freq==0:
@@ -200,5 +200,5 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
         #print(imsize)
 
 to_size = (128,128)
-src_path = "../../images/train" # training from 1m_faces_02, validation 1m_faces_03
-jpg_process(src_path,"../data/mixed128",to_size=to_size)    
+src_path = "../../images/val" # training from 1m_faces_02, validation 1m_faces_03
+jpg_process(src_path,"../data/facerecognition128",to_size=to_size)    
