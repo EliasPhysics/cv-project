@@ -139,9 +139,12 @@ def check_size(img_path):
 def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None,norm_lab=False,to_size=None):
     c = 0
     print("converting and saving")
-    for i,file_path in enumerate(glob.glob(f"{src_path}/*.jpg")):  # Iterate over all JPG files
-        #os.listdir(src_path)
-        
+    for i,file_path in enumerate(os.listdir(src_path)): #glob.glob(f"{src_path}/*.jpg")):  # Iterate over all JPG files
+        # os.listdir(src_path)
+
+        if ".jpg" not in file_path:
+            continue
+
         if i%print_freq==0:
             print(f"progress : {i}")
         img = io.imread(src_path+"/"+file_path)  # Load image
@@ -200,5 +203,5 @@ def jpg_process(src_path,trg_path,print_freq=100,factor=0,target_shape_crop=None
         #print(imsize)
 
 to_size = (256,256)
-src_path = "../../images/1m_faces_02" # training from 1m_faces_02, validation 1m_faces_03
-jpg_process(src_path,"../data/faces256",to_size=to_size)    
+src_path = "../../1m_faces_03" # training from 1m_faces_02, validation 1m_faces_03
+jpg_process(src_path,"../data/val_faces256",to_size=to_size)    
