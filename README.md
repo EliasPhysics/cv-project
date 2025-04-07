@@ -1,13 +1,8 @@
 # Human Face Colorization
 
 ## Overview
-This project focuses on human face colorization using deep learning techniques. The goal is to develop a model capable of converting grayscale facial images into realistic color images using convolutional neural networks (CNNs) and generative adversarial networks (GANs).
+This project focuses on human face potrait colorization using deep learning techniques. 
 
-## Features
-- Converts black-and-white facial images into colored versions
-- Uses deep learning architectures like CNNs and GANs
-- Pretrained models for improved colorization accuracy
-- User-friendly interface for easy usage
 
 ## Dataset
 We use publicly available datasets:
@@ -39,3 +34,5 @@ There is also code that can be found in the src folder to preprocess images.
 - [Elias Huber](https://github.com/yourusername)
 - [Sam Rouppe Van der Voort](https://github.com/teammateusername)
 - [Oliver Sange](https://github.com/teammateusername)
+
+We also want to note that we used LLMs for creating Numpy style docstrings on some functions in the code.
