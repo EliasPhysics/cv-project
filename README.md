@@ -10,10 +10,9 @@ This project focuses on human face colorization using deep learning techniques. 
 - User-friendly interface for easy usage
 
 ## Dataset
-We use publicly available datasets such as:
-- CelebA (Large-scale celebrity face dataset)
-- FFHQ (Flickr-Faces-HQ for high-quality face images)
-- Custom grayscale images for testing
+We use publicly available datasets:
+- [1 Million Fake Faces](https://www.kaggle.com/datasets/tunguz/1-million-fake-faces)
+- [Face Detection Dataset](https://www.kaggle.com/datasets/fareselmenshawii/face-detection-dataset)
 
 ## Installation
 To set up the project, follow these steps:
@@ -22,35 +21,21 @@ To set up the project, follow these steps:
 # Clone the repository
 git clone https://github.com/yourusername/face-colorization.git
 cd face-colorization
-
-# Install dependencies
-pip install -r requirements.txt
 ```
-
-## Usage
-Run the following command to colorize an image:
+Because we had no access to local GPU compute ressources we ran most of the code inside of a jupyter notebooks on [Google Colab](https://colab.research.google.com/).
+Either way, we created an environment.yml with conda if you want to run this code locally. This can be done by running
 
 ```bash
-python colorize.py --input path/to/grayscale_image.jpg --output path/to/output.jpg
+# Clone the repository
+conda env create --file environment.yml
+conda activate my-project
 ```
 
-## Model Architecture
-- **Feature Extractor:** A deep CNN extracts features from grayscale images.
-- **Colorization Network:** Uses GANs or CNN-based U-Net to predict color channels.
-- **Loss Functions:** Combination of pixel-wise loss and perceptual loss for better color accuracy.
+Then you can just open the demo.ipynb notebook to reproduce the experiments or colorize your own images.
+There is also code that can be found in the src folder to preprocess images. 
 
-## Results
-Include some before-and-after images showcasing the model's performance.
-
-## Future Improvements
-- Improve model accuracy using transformer-based approaches
-- Enhance real-time performance
-- Integrate with mobile applications
 
 ## Contributors
 - [Elias Huber](https://github.com/yourusername)
 - [Sam Rouppe Van der Voort](https://github.com/teammateusername)
 - [Oliver Sange](https://github.com/teammateusername)
-## License
-This project is licensed under the MIT License.
-
