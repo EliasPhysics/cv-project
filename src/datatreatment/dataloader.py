@@ -84,25 +84,3 @@ def torch_to_numpy(img_tensor):
     img_numpy = img_tensor.permute(1, 2, 0).cpu().numpy()  # Change (C, H, W) -> (H, W, C)
     return img_numpy
 
-## target of generator should be gt_batch[:,1:]
-# print(gt_batch[:,1:].shape)
-
-#import colorconvert as colconv
-
-#lab_img = torch_to_numpy(torch.cat((input_batch[0],gt_batch[0]),dim=0))
-
-#colconv.display_lab(lab_img)
-
-
-
-#gray_img = torch_to_numpy(input_batch[0])
-
-#import matplotlib.pyplot as plt
-
-#gray = plt.imshow(gray_img,cmap="gray")
-#plt.show()
-
-# # gray_img = torch_to_numpy(gt_batch[0,0].unsqueeze(0))
-
-# # gray = plt.imshow(gray_img,cmap="gray")
-# # plt.show()
