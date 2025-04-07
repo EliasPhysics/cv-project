@@ -1,7 +1,7 @@
 # Human Face Colorization
 
 ## Overview
-This project focuses on human face potrait colorization using deep learning techniques. 
+This project focuses on human face potrait colorization using deep learning techniques. The core functionalities of the baseline model are taken from [M. Berkay's Image colorization](\url{https://github.com/mberkay0/image-colorization}) For further information look at the report provided as PDF.
 
 
 ## Dataset
